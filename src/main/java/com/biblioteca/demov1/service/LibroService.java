@@ -23,4 +23,28 @@ public class LibroService {
         return repo.findById(id);
     }
 
+    public boolean Guardar(Libro libro){
+        return repo.save(libro);
+    }
+
+    public Libro actualizar(int id, Libro libro){
+        Libro libroActualizado = repo.findById(id);
+        if (libroActualizado != null){
+            libroActualizado.setNombre(libro.getNombre());
+            libroActualizado.setAutor(libro.getAutor());
+            libroActualizado.setFechaPublicacion(libro.getFechaPublicacion());
+            libroActualizado.setEditorial(libro.getEditorial());
+            return libroActualizado;
+        }
+        return null;  
+    }
+
+    public boolean eliminar(int id){
+        Libro libroBorrado = repo.findById(id);
+        if (libroBorrado != null){
+            return repo.delete(libroBorrado);
+        }
+        return false;
+    }
+
 }
