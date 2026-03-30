@@ -36,9 +36,8 @@ public class LibroRepository {
         return null;
     }
 
-    public Libro save(Libro libro){
-        listaLibros.add(libro);
-        return libro;
+    public boolean save(Libro libro){
+        return listaLibros.add(libro);
     }
 
     public boolean delete(Libro libro){
