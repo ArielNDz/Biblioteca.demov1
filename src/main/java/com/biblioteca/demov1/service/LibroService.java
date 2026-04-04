@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.biblioteca.demov1.exception.LibroNoEncontradoException;
 import com.biblioteca.demov1.model.Libro;
 import com.biblioteca.demov1.repository.LibroRepository;
 
@@ -20,7 +21,11 @@ public class LibroService {
     }
 
     public Libro buscarPorId(int id){
-        return repo.findById(id);
+        Libro libro = repo.findById(id);
+        if (libro == null){
+            throw new LibroNoEncontradoException("No se encontro el libro con id: " + id);
+        }
+        return libro;
     }
 
     public boolean Guardar(Libro libro){
