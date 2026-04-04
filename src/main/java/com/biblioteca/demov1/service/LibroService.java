@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.biblioteca.demov1.exception.LibroNoEncontradoException;
+import com.biblioteca.demov1.exception.OperacionInvalidaException;
 import com.biblioteca.demov1.model.Libro;
 import com.biblioteca.demov1.repository.LibroRepository;
 
@@ -28,28 +29,32 @@ public class LibroService {
         return libro;
     }
 
-    public boolean Guardar(Libro libro){
-        return repo.save(libro);
+    public Libro guardar(Libro libro){
+        boolean exito = repo.save(libro);
+        if (!exito){
+            throw new OperacionInvalidaException("No se pudo guardar el libro.");
+        }
+        return libro;
     }
+
 
     public Libro actualizar(int id, Libro libro){
-        Libro libroActualizado = repo.findById(id);
-        if (libroActualizado != null){
-            libroActualizado.setNombre(libro.getNombre());
-            libroActualizado.setAutor(libro.getAutor());
-            libroActualizado.setFechaPublicacion(libro.getFechaPublicacion());
-            libroActualizado.setEditorial(libro.getEditorial());
-            return libroActualizado;
+        Libro actualizado = repo.findById(id);
+        if (actualizado == null){
+            throw new LibroNoEncontradoException("No se encontro el libro con id: " + id);
         }
-        return null;  
+        return repo.update(id, libro);
     }
 
-    public boolean eliminar(int id){
-        Libro libroBorrado = repo.findById(id);
-        if (libroBorrado != null){
-            return repo.delete(libroBorrado);
+    public void eliminar(int id){
+        Libro borrado = repo.findById(id);
+        if (borrado == null){
+            throw new LibroNoEncontradoException("No se encontro el libro con id: " + id);
         }
-        return false;
+        boolean exito = repo.delete(borrado);
+        if (!exito){
+            throw new OperacionInvalidaException("No se pudo eliminar el libro con id: " + id);
+        }
     }
 
 }

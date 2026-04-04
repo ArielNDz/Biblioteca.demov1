@@ -43,4 +43,13 @@ public class LibroRepository {
     public boolean delete(Libro libro){
         return listaLibros.remove(libro);
     }
+
+    public Libro update(int id, Libro libro){
+        Libro actualizado = findById(id);
+        actualizado.setAutor(libro.getAutor());
+        actualizado.setEditorial(libro.getEditorial());
+        actualizado.setFechaPublicacion(libro.getFechaPublicacion());
+        actualizado.setNombre(libro.getNombre());
+        return actualizado;
+    }
 }
